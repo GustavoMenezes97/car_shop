@@ -34,4 +34,16 @@ export default class CarODM {
     
     return this.model.findById(id);
   }
+
+  public async updateById(id: string, car: ICar): Promise<ICar | null | undefined> {
+    if (!isValidObjectId(id)) {
+      return undefined;
+    }
+
+    return this.model.findOneAndUpdate(
+      { _id: id },
+      { ...car },
+      { new: true },
+    );
+  }
 }

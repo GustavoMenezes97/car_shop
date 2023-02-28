@@ -54,4 +54,23 @@ export default class CarController {
       this.next(error);
     }
   }
+
+  public async updateById() {
+    const { id } = this.req.params;
+    const car = this.req.body;
+
+    try {
+      const updateById = await this.service.updateById(id, car);
+
+      if (updateById === null) {
+        return this.res.status(404).json({ message: 'Car not found' });
+      } if (updateById === undefined) {
+        return this.res.status(422).json({ message: 'Invalid mongo id' });
+      }
+      
+      return this.res.status(200).json(updateById);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
