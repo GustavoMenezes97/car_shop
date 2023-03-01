@@ -1,22 +1,22 @@
 import { Schema, isValidObjectId } from 'mongoose';
-import ICar from '../Interfaces/ICar';
+import IMotorcycle from '../Interfaces/IMotorcycle';
 import AbstractODM from './AbstractODM';
 
-export default class CarODM extends AbstractODM<ICar> {
+export default class MotorcycleODM extends AbstractODM<IMotorcycle> {
   constructor() {
-    const schema = new Schema<ICar>({
+    const schema = new Schema<IMotorcycle>({
       model: { type: String, required: true },
       year: { type: Number, required: true },
       color: { type: String, required: true },
       status: { type: Boolean, required: false },
       buyValue: { type: Number, required: true },
-      doorsQty: { type: Number, required: true },
-      seatsQty: { type: Number, required: true },
+      category: { type: String, required: true },
+      engineCapacity: { type: Number, required: true },
     });
-    super('Car', schema);
+    super('Motorcycle', schema);
   }
 
-  public async getById(id: string): Promise<ICar | null | undefined> {
+  public async getById(id: string): Promise<IMotorcycle | null | undefined> {
     if (!isValidObjectId(id)) {
       return undefined;
     }
@@ -24,14 +24,15 @@ export default class CarODM extends AbstractODM<ICar> {
     return this.model.findById(id);
   }
 
-  public async updateById(id: string, car: ICar): Promise<ICar | null | undefined> {
+  public async updateById(id: string, motorcycle: IMotorcycle)
+    : Promise<IMotorcycle | null | undefined> {
     if (!isValidObjectId(id)) {
       return undefined;
     }
 
     return this.model.findOneAndUpdate(
       { _id: id },
-      { ...car },
+      { ...motorcycle },
       { new: true },
     );
   }
